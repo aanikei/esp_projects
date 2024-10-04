@@ -38,6 +38,7 @@ Next settings are used in Arduino IDE:
 - Core Debug Level: None (TX (GPIO1) and RX (GPIO3) pins may be used in a project. You will need to comment out any code that may use them before changing the debug level to debug the code).
 - Partition Scheme: Minimal SPIFFS.
 - PSRAM: Enabled.
+
 The rest of the settings can be left as is.
 
 ## Watering
@@ -47,7 +48,7 @@ The main use case for the majority of the projects is to water indoor plants. Fo
 Capacitive soil moisture sensors monitor moisture levels and watering is triggered when the level falls below a set threshold. You may want to check this [video](https://www.youtube.com/watch?v=IGP38bz-K48) to ensure that your sensors are working properly. As these sensors are also affected by corrosion over long periods of time, I only power them once an hour. In ESP32-CAMs, GPIO0 is used for that purpose. Since this pin is pulled up on the board, an inverting circuit is needed. I use [these](https://electronics.stackexchange.com/questions/641558/is-it-possible-to-make-a-high-side-pnp-switch-circuit-active-low-with-less-than) for my projects.
 
 As for the pumps, diaphragm water pumps like the R385 can be used, or smaller ones. If higher voltage is needed for the R385, I recommend using a step-up DC-DC converter like the one in the image below.
-> ![Converter.](/ESP32_CAM_mod.jpg)
+> ![Converter.](/converter.jpg)
 
 As one pump may be used to water more than one plant, moisture sensors can be placed in different pots, and the water pressure can be regulated using airline valves for fish tanks.
 
