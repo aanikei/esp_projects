@@ -363,26 +363,6 @@ void pinConfig() {
   gpio_set_level(PUMP2_PIN, 0);
 }
 
-bool connectToWifi() {
-  log_i("Attempting Wifi connection");
-  WiFi.begin(ssid, password);
-  int32_t wifiAttempts = 0;
-  while (WiFi.status() != WL_CONNECTED && wifiAttempts < 20) {
-    vTaskDelay(500 / portTICK_PERIOD_MS);
-    log_i(".");
-    wifiAttempts++;
-  }
-
-  if (WiFi.status() == WL_CONNECTED) {
-    WiFi.setAutoReconnect(true);
-    log_i("ip: %s", WiFi.localIP().toString());
-    return true;
-  } else {
-    WiFi.disconnect(true, true);
-    return false;
-  }
-}
-
 void connectToMQTT() {
   client.setBufferSize(512);
   client.setServer(server, 1883);

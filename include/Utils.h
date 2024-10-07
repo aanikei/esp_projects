@@ -3,6 +3,26 @@
 #include <ESP32_FTPClient.h>
 #include <ESP32Time.h>
 
+bool connectToWifi() {
+  log_i("Attempting Wifi connection");
+  WiFi.begin(ssid, password);
+  int32_t wifiAttempts = 0;
+  while (WiFi.status() != WL_CONNECTED && wifiAttempts < 20) {
+    vTaskDelay(500 / portTICK_PERIOD_MS);
+    log_i(".");
+    wifiAttempts++;
+  }
+
+  if (WiFi.status() == WL_CONNECTED) {
+    WiFi.setAutoReconnect(true);
+    log_i("ip: %s", WiFi.localIP().toString());
+    return true;
+  } else {
+    WiFi.disconnect(true, true);
+    return false;
+  }
+}
+
 bool setTime(int32_t& prevHour, ESP32Time& rtc, const char* ntpServer, bool& mqttDiscovery) {
   if (prevHour != rtc.getHour(true)) {
       prevHour = rtc.getHour(true);
