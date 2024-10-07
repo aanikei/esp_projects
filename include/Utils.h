@@ -1,6 +1,21 @@
 #pragma once
 #include <regex>
 #include <ESP32_FTPClient.h>
+#include <ESP32Time.h>
+
+bool setTime(int32_t& prevHour, ESP32Time& rtc, const char* ntpServer, bool& mqttDiscovery) {
+  if (prevHour != rtc.getHour(true)) {
+      prevHour = rtc.getHour(true);
+      configTime(0, 0, ntpServer);
+      struct tm timeinfo;
+      if (getLocalTime(&timeinfo)) {
+        rtc.setTimeStruct(timeinfo);
+      }
+    mqttDiscovery = true;
+	return true;
+  }
+  return false;
+}
 
 void sendDataToFTP(ESP32_FTPClient& ftp, unsigned char* in, int size, const char* dir, const char* filename) {
   log_i("Opening connection to FTP");

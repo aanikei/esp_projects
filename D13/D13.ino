@@ -96,7 +96,7 @@ bool powerCycle = false;
 //NTP & time
 const char* ntpServer = "europe.pool.ntp.org";
 const int32_t  gmtOffset_sec = 3600 * offset_hours;
-RTC_NOINIT_ATTR int prevHour; // used to request time sync
+RTC_NOINIT_ATTR int32_t prevHour; // used to request time sync
 ESP32Time rtc(gmtOffset_sec);  //offset in seconds
 const uint32_t uS_TO_S_FACTOR = 1000000ULL;  //Conversion factor for microseconds to seconds
 
@@ -198,14 +198,7 @@ void setup() {
   bool wifiConnected = connectToWifi();
 
   if (wifiConnected) {
-    if (prevHour != rtc.getHour(true)) {
-      prevHour = rtc.getHour(true);
-      configTime(0, 0, ntpServer);
-      struct tm timeinfo;
-      if (getLocalTime(&timeinfo)) {
-        rtc.setTimeStruct(timeinfo);
-      }
-      mqttDiscovery = true;
+    if (setTime(prevHour, rtc, ntpServer, mqttDiscovery)) {
       allowSensor = true;
     }
 
