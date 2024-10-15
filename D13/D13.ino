@@ -259,8 +259,8 @@ void setup() {
             log_e("Error: %s", error);
           } else {
             esp_task_wdt_reset();
-            const char* filename = rtc.getTime("%Y%m%d_%H%M%S.jpg").c_str();
-            sendDataToFTP(ftp, (unsigned char*)fb->buf, fb->len, NULL, filename);
+            String filename = rtc.getTime("%Y%m%d_%H%M%S.jpg");
+            sendDataToFTP(ftp, (unsigned char*)fb->buf, fb->len, NULL, filename.c_str());
             pic = false;
           }
 
